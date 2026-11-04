@@ -15,8 +15,8 @@ signature: tunderadev
 
 The desk merged every "wrong date" report into [#4471](/kb/incidents/4471) because the subject
 lines matched ([decision 0001](/kb/decisions/0001-dedupe-by-subject)). The subjects match. The
-bugs don't. The desk's own cause table already shows three problems. Only one of them has a
-ticket, and the parser fix that's queued covers only that one.
+bugs don't. The desk's own cause table already shows three problems. The desk closed #4471 on
+5 October with an answer for two of them. The third is still open.
 
 <CauseTable ticket={4471} />
 
@@ -25,15 +25,25 @@ third problem. Those reports stay counted under `parser`, where they're filed, a
 ticket as well.
 
 <Callout kind="warn">
-Shipping the parser fix will not close #4471. The other two problems have different causes and
-need their own fixes.
+#4471 is closed, but the one-day moves are not fixed. Ticket #3 is still open.
 </Callout>
+
+## Where it stands
+
+| problem | what the desk did on 5 October | ticket |
+| --- | --- | --- |
+| `parser` | fixed: "fix(dates): parse dd/mm for eu locales" | [#1](https://github.com/tunderadev/mega-support-kb/issues/1), closed |
+| `hint` | won't fix: the booking-v3 form is retired | [#2](https://github.com/tunderadev/mega-support-kb/issues/2), closed as not planned |
+| one-day moves | nothing | [#3](https://github.com/tunderadev/mega-support-kb/issues/3), open |
+
+Neither change reaches the one-day moves. They aren't a day/month swap, so reading the day first
+doesn't help, and none of them came in through the booking-v3 form.
 
 ## `parser`: the shared parser reads dates month first
 
 Every tenant in #4471 writes dates day first. The shared parser reads every date month first, so
-8 June comes back as 6 August. This is the problem the incident page describes, and the queued
-fix is for it. It reaches every way in except the booking-v3 form: the app, email, and the
+8 June comes back as 6 August. This is the problem the incident page describes. The desk shipped
+the fix on 5 October. It reached every way in except the booking-v3 form: the app, email, and the
 booking-v2 form, whose hint already says `DD/MM/YYYY`.
 
 Ticket [#1](https://github.com/tunderadev/mega-support-kb/issues/1).
@@ -42,8 +52,8 @@ Ticket [#1](https://github.com/tunderadev/mega-support-kb/issues/1).
 
 booking-v3 prints `MM/DD/YYYY` under its date field. People type what it says. The form then
 reads the date the tenant's way, day first, and the booking lands with day and month swapped. The
-symptom looks exactly like `parser`, but fixing the parser won't change it. The hint is wrong,
-so the hint has to change: it should follow the tenant's locale.
+symptom looks exactly like `parser`, but fixing the parser doesn't change it. The desk retired
+the booking-v3 form instead of fixing the hint, so no new booking can hit this.
 
 Only reports that came in through the form, at a tenant on booking-v3, belong here. The table
 marks this row as having no ticket of its own. It has one now.
@@ -56,7 +66,7 @@ These are the reports in the footnote. They describe no swap. "Invite says Tuesd
 Calendar says Monday 11 May." "Client in Lisbon got Tuesday. Client in Toronto got Monday. Same
 meeting." The date shifts by a day, and it shifts differently for people in different places.
 That reads like a time zone bug, a date stored as midnight in one zone and shown in another. Day
-order has nothing to do with it, so neither fix above moves these back.
+order has nothing to do with it, so the parser fix and the retired form leave these as they were.
 
 The desk spotted them by reading (`desk-notes.json`). One reporter says they stopped reporting
 these, so the footnote is a floor.
