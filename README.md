@@ -39,8 +39,7 @@ Exported 2026-10-04 from the `support` repo, `apps/kb/` → `src/`.
 
 This repo is the 2026-10-04 export plus one page and what it takes to render it.
 
-- The new page is `src/routes/kb/incidents/4471/problems/+page.svx`. It splits #4471 into the three problems filed as issues #1, #2 and #3.
-- Its logic is in `src/lib/kb/problems.ts` and `src/lib/kb/ProblemTable.svelte`. The issue links are in `src/lib/data/tickets-4471.json`.
+- The new page is `src/routes/kb/incidents/4471/problems/+page.svx`. It splits #4471 into the three problems filed as issues #1, #2 and #3. Its numbers come from the desk's own `CauseTable`, unchanged from the export.
 - The page as the desk sees it is `rendered/kb/incidents/4471/problems.html`, a single HTML file with the CSS inlined, plus a screenshot next to it.
 - `package.json`, `vite.config.js`, `src/app.html` and `src/routes/+layout.js` are the build. The export shipped without them.
 

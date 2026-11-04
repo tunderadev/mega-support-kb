@@ -8,19 +8,21 @@ signature: tunderadev
 ---
 
 <script>
-  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import CauseTable from '#lib/kb/CauseTable.svelte';
   import Callout from '#lib/kb/Callout.svelte';
   import RenderStamp from '#lib/kb/RenderStamp.svelte';
-  import tickets from '#lib/data/tickets-4471.json';
-  const oneDay = tickets['one-day'];
 </script>
 
 The desk merged every "wrong date" report into [#4471](/kb/incidents/4471) because the subject
 lines matched ([decision 0001](/kb/decisions/0001-dedupe-by-subject)). The subjects match. The
-bugs don't. Split by tenant, by how the report came in and by what the reporter says moved, the
-reports fall into three problems. The parser fix that's queued covers one of them.
+bugs don't. The desk's own cause table already shows three problems. Only one of them has a
+ticket, and the parser fix that's queued covers only that one.
 
-<ProblemTable ticket={4471} />
+<CauseTable ticket={4471} />
+
+The table counts the way the desk files: by tenant and channel. The footnote under it is the
+third problem. Those reports stay counted under `parser`, where they're filed, and get their own
+ticket as well.
 
 <Callout kind="warn">
 Shipping the parser fix will not close #4471. The other two problems have different causes and
@@ -34,7 +36,7 @@ Every tenant in #4471 writes dates day first. The shared parser reads every date
 fix is for it. It reaches every way in except the booking-v3 form: the app, email, and the
 booking-v2 form, whose hint already says `DD/MM/YYYY`.
 
-Ticket [#{tickets.parser.number}]({tickets.parser.url}).
+Ticket [#1](https://github.com/tunderadev/mega-support-kb/issues/1).
 
 ## `hint`: the booking-v3 form tells people to type the month first
 
@@ -43,26 +45,27 @@ reads the date the tenant's way, day first, and the booking lands with day and m
 symptom looks exactly like `parser`, but fixing the parser won't change it. The hint is wrong,
 so the hint has to change: it should follow the tenant's locale.
 
-Only reports that came in through the form, at a tenant on booking-v3, belong here.
+Only reports that came in through the form, at a tenant on booking-v3, belong here. The table
+marks this row as having no ticket of its own. It has one now.
 
-Ticket [#{tickets.hint.number}]({tickets.hint.url}).
+Ticket [#2](https://github.com/tunderadev/mega-support-kb/issues/2).
 
-## `one-day`: a date that moves by one day
+## One-day moves: a date that moves by one day
 
-These reports describe no swap. "Invite says Tuesday 12 May. Calendar says Monday 11 May." "Client
-in Lisbon got Tuesday. Client in Toronto got Monday. Same meeting." The date shifts by a day, and
-it shifts differently for people in different places. That reads like a time zone bug, a date
-stored as midnight in one zone and shown in another. Day order has nothing to do with it, so
-neither fix above moves these back.
+These are the reports in the footnote. They describe no swap. "Invite says Tuesday 12 May.
+Calendar says Monday 11 May." "Client in Lisbon got Tuesday. Client in Toronto got Monday. Same
+meeting." The date shifts by a day, and it shifts differently for people in different places.
+That reads like a time zone bug, a date stored as midnight in one zone and shown in another. Day
+order has nothing to do with it, so neither fix above moves these back.
 
-The desk already spotted them (`desk-notes.json`), but the incident page counts them under
-`parser` and puts them in a footnote. They get their own ticket here.
+The desk spotted them by reading (`desk-notes.json`). One reporter says they stopped reporting
+these, so the footnote is a floor.
 
-Ticket [#{oneDay.number}]({oneDay.url}).
+Ticket [#3](https://github.com/tunderadev/mega-support-kb/issues/3).
 
 ## Telling them apart
 
-1. Read what moved. Day and month swapped means `parser` or `hint`. One day off means `one-day`.
+1. Read what moved. Day and month swapped means `parser` or `hint`. One day off is a one-day move.
 2. For a swap, check how the report came in. Through the form at a booking-v3 tenant is `hint`.
    Anything else is `parser`.
 3. Ignore the intake tag. Intake guesses from the reporter's browser, not the tenant, and the
