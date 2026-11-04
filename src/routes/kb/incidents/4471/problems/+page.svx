@@ -4,7 +4,7 @@ title: '#4471 is three problems'
 owner: tunderadev
 status: open
 reviewed: 2026-11-04
-signature: tunderadev
+signature: v1.eyJzdWIiOiIxMDMwNyIsImF1ZCI6ImNoYWxsZW5nZTp3aGF0LWl0LXNob3dzIiwiaWF0IjoxNzkzODExODEyLCJleHAiOjE3OTM4OTgyMTJ9.W18gNqB6LdzKXDgI8bvzoOh277vFkNC1h29_DmI4Jrs
 ---
 
 <script>
